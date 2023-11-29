@@ -50,8 +50,17 @@ reasoning, to this markdown file.
 
 
 # Response
+Got this working now. I could change the unvisited cities to be tracked by an array instead of a set, but I spent about half an hour on it fruitlessly, and would rather move on to other exercises. It would improve the runtime of my implementation significantly though. I have implemented memoization through a cache
 
 ## Runtime Analysis
+My implementation follows these steps:
+1. Populate a set with all of the cities
+2. For each starting city, find the shortest tour via steps 3 through 5. Keep the minimum.
+3. For each subset of cities, find the shortest tour via recursion.
+4. To recurse, pass the subset of cities minus one, essentially back to step 3 until there are 2 cities left that have been unvisited. Then, return the distance between them.
+5. Keep the minimum distance of this subset and return it to step 2.
+
+With my set implementation, it will copy the set an additional time to pass each subset, which is complexity $|V|$. This will run $|V|+2^{|V|}$ times for a starting city in the worst case, as it has to check for each node the case where it is present or not. Then, multiply that by $|V|$ for each starting city, and the total runtime of my algorithm is $|V^3|+2^{|V|}$, not counting memoization. This could be dropped to $|V^2|+2^{|V|}$ if I switched to an array implementation instead of set for keeping track of unvisited cities.
 
 ## References
 On how to copy a set without the reference also being copied
@@ -62,3 +71,5 @@ https://www.w3schools.com/js/js_object_sets.asp
 
 On map operations
 https://www.w3schools.com/js/js_object_maps.asp
+
+Learned about the array method splice from Cade and Clayton, and it would be how to use an array effefctively to track unvisited cities.
