@@ -47,3 +47,18 @@ Test your new function; I've provided some basic testing code in `code.test.js`.
 What is the worst-case asymptotic time complexity of your implementation? What
 is the worst-case asymptotic memory complexity? Add your answer, including your
 reasoning, to this markdown file.
+
+
+# Response
+
+## Runtime Analysis
+
+## References
+On how to copy a set without the reference also being copied
+https://bobbyhadz.com/blog/javascript-deep-copy-map#create-a-shallow-copy-of-a-set-in-javascript
+
+On set operations
+https://www.w3schools.com/js/js_object_sets.asp
+
+On map operations
+https://www.w3schools.com/js/js_object_maps.asp

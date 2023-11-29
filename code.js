@@ -3,73 +3,60 @@ function tsp_hk(distance_matrix) {
   {
     return 0
   }
-  unvisited = []
+  //Helper function which passes necessary information to recursive solution
+  allCities = new Set([])
   for(i = 0; i < distance_matrix.length; i++)
   {
-    unvisited.push(true)
+    allCities.add(i)
   }
-  unvisited.push(distance_matrix.length)
-  return heldKarp(distance_matrix, unvisited)
-  
+  minimum = Infinity
+  cache = []
+  for(i = 0; i < distance_matrix.length; i++)
+  {
+    temp = heldKarp(distance_matrix, i, allCities, cache)
+    if(minimum > temp)
+    {
+      minimum = temp
+    }
+    cache = []
+  }
+  return minimum
 }
 
-function heldKarp(dist, unvisited, start = 0, cache = new Map([])) {
-  //console.log(unvisited.size)
-  if(unvisited[dist.length] == 2)
+function heldKarp(dist, start = 0, unvisited, cache) {
+  var key = JSON.stringify(Array.from(unvisited).sort())
+  if(cache[key] === undefined)
   {
-      temp = []
-      for(i = 0; i < dist.length; i++)
-      {
-        if(unvisited[i] == true)
-        {
-          temp.push(i)
-        }
-      }
-      return dist[temp[0]][temp[1]]
-  } else
+    cache[key] = [];
+  }
+  if(cache[key][start] !== undefined)
   {
-    min = [Infinity, -1]
-    for(let i = 0; i < dist.length; i++)
+    return cache[key][start];
+  }
+  // First section. If only two unvisited cities remain, return the distance between them.
+  if(unvisited.size == 2)
+  {
+    let temp = Array.from(unvisited)
+    return dist[temp[0]][temp[1]]
+  }
+  // Else, find minimum of subsets where 1 city has been removed
+  let min = Infinity
+  for(let city of unvisited)
+  {
+    if(city != start)
     {
-      // Make sure there is an edge there. In this sort of distance matrix, the edges that aren't there
-      // as well as edges to self are treated as 0
-      if(unvisited[i] && dist[start][i] > 0)
+      // Create copy of unvisited cities that I can remove one element from each iteration of the loop
+      let nextCities = new Set(unvisited)
+      nextCities.delete(start)
+      //unvisited.delete(start)
+      let temp = heldKarp(dist, city, nextCities, cache) + dist[start][city]
+      if(min > temp)
       {
-        unvisited[i] = false
-        unvisited[dist.length]--
-        cand = [heldKarp(dist, unvisited, i) + dist[start][i], i]
-        if(min[0] > cand[0])
-        {
-          min = cand
-        }
-        unvisited[cand[1]] = true
-        unvisited[dist.length]++
+        min = temp
       }
-    }
-    unvisited[min[1]] = false
-    unvisited[dist.length]--
-    if(min[0] == Infinity)
-    {
-      return 0
-    } else{
-      return min[0]
+      //unvisited.add(city)
     }
   }
+  cache[key][start] = min
+  return min
 }
-
-console.log(tsp_hk([[0,2],[2,0]]))
-/*console.log(heldKarp(
-    [[0,1,2],
-    [1,0,2],
-    [2,2,0]], 1, new Set([1,0])))*/
-
-/*
-// cities is the set of cities not visited so far, including start
-heldKarp(cities, start)
-  if |cities| == 2
-    return length of tour that starts at start, goes directly to other city in cities
-  else
-    return the minimum of
-      for each city in cities, unless the city is start
-        // reduce the set of cities that are unvisited by one  (the old start), set the new start, add on the distance from old start to new start
-        heldKarp(cities - start, city) + distance from start to city*/
