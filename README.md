@@ -60,7 +60,9 @@ My implementation follows these steps:
 4. To recurse, pass the subset of cities minus one, essentially back to step 3 until there are 2 cities left that have been unvisited. Then, return the distance between them.
 5. Keep the minimum distance of this subset and return it to step 2.
 
-With my set implementation, it will copy the set an additional time to pass each subset, which is complexity $|V|$. This will run $|V|+2^{|V|}$ times for a starting city in the worst case, as it has to check for each node the case where it is present or not. Then, multiply that by $|V|$ for each starting city, and the total runtime of my algorithm is $|V^3|+2^{|V|}$, not counting memoization. This could be dropped to $|V^2|+2^{|V|}$ if I switched to an array implementation instead of set for keeping track of unvisited cities.
+Basically, for a given set of unvisited cities and a start city, it will run $|2^V|$ times to check each unordered permutation of the unvisited cities. Then, whenever it recurses to find subsets, it will pass a copy of the current set of unvisited cities, which is complexity $|V|$. Then, since I want to check for the shortest path starting at each city, that will all run $|V|$ times. This gives an overall complexity of $\Theta\left(2^{|V|}*V^2\right)$
+
+The memory complexity of this algorithm is $|2^V|$, because it will store every version of the unvisited cities set it can come across. Since my implementation sorts the set, there won't be duplicates of the information. The number of possible permutations, disregarding duplicates, is $|2^V|$ because each cities can either be in or out of the set.
 
 ## References
 On how to copy a set without the reference also being copied
