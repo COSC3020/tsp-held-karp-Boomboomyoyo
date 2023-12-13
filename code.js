@@ -18,8 +18,8 @@ function tsp_hk(distance_matrix) {
     {
       minimum = temp
     }
-    cache = []
   }
+  cache = []
   return minimum
 }
 
