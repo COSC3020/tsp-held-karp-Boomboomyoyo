@@ -62,7 +62,7 @@ My implementation follows these steps:
 
 Basically, for a given set of unvisited cities and a start city, it will run $|2^V|$ times to check each unordered permutation of the unvisited cities. Then, whenever it recurses to find subsets, it will pass a copy of the current set of unvisited cities, which is complexity $|V|$. Then, since I want to check for the shortest path starting at each city, that will all run $|V|$ times. This gives an overall complexity of $\Theta\left(2^{|V|}*V^2\right)$
 
-The memory complexity of this algorithm is $|2^V|$, because it will store every version of the cities set it comes across. Since my implementation sorts the set, there won't be duplicates of the information for any given set of cities. The number of possible permutations, disregarding duplicates, is $|2^V|$ because each cities can either be in or out of the set. 
+The memory complexity of my implementation will be $2^{|V|}*|V|$, because it will store every unordered permutation of a set of cities, from every possible start city. My implementation sorts the set before storing it in the cache, so there aren't duplicates of the information, which is why the memory complexity is $2^{|V|}*|V|$ instead of $|V|!$. The number of possible permutations, disregarding duplicates, is $|2^V|$ because each cities can either be in or out of the set. 
 
 ## References
 On how to copy a set without the reference also being copied
