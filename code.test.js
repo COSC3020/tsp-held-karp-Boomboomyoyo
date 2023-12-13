@@ -9,6 +9,7 @@ assert(tsp_hk(dm) == 0);
 dm = [[0]];
 assert(tsp_hk(dm) == 0);
 
+
 dm = [[0,0,0],
       [0,0,0],
       [0,0,0]];

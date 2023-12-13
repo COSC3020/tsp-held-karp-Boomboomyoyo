@@ -1,3 +1,4 @@
+[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=12774862&assignment_repo_type=AssignmentRepo)
 # Traveling Salesperson Problem -- Held-Karp Algorithm
 
 This exercise is about the Traveling Salesperson Problem I mentioned in the
@@ -46,3 +47,31 @@ Test your new function; I've provided some basic testing code in `code.test.js`.
 What is the worst-case asymptotic time complexity of your implementation? What
 is the worst-case asymptotic memory complexity? Add your answer, including your
 reasoning, to this markdown file.
+
+
+# Response
+Got this working now. I could change the unvisited cities to be tracked by an array instead of a set, but I spent about half an hour on it fruitlessly, and would rather move on to other exercises. It would improve the runtime of my implementation significantly though. I have implemented memoization through a cache
+
+## Runtime Analysis
+My implementation follows these steps:
+1. Populate a set with all of the cities
+2. For each starting city, find the shortest tour via steps 3 through 5. Keep the minimum.
+3. For each subset of cities, find the shortest tour via recursion.
+4. To recurse, pass the subset of cities minus one, essentially back to step 3 until there are 2 cities left that have been unvisited. Then, return the distance between them.
+5. Keep the minimum distance of this subset and return it to step 2.
+
+Basically, for a given set of unvisited cities and a start city, it will run $|2^V|$ times to check each unordered permutation of the unvisited cities. Then, whenever it recurses to find subsets, it will pass a copy of the current set of unvisited cities, which is complexity $|V|$. Then, since I want to check for the shortest path starting at each city, that will all run $|V|$ times. This gives an overall complexity of $\Theta\left(2^{|V|}*V^2\right)$
+
+The memory complexity of my implementation will be $2^{|V|}*|V|$, because it will store every unordered permutation of a set of cities, from every possible start city. My implementation sorts the set before storing it in the cache, so there aren't duplicates of the information, which is why the memory complexity is $2^{|V|}*|V|$ instead of $|V|!$. The number of possible permutations, disregarding duplicates, is $|2^V|$ because each cities can either be in or out of the set. 
+
+## References
+On how to copy a set without the reference also being copied
+https://bobbyhadz.com/blog/javascript-deep-copy-map#create-a-shallow-copy-of-a-set-in-javascript
+
+On set operations
+https://www.w3schools.com/js/js_object_sets.asp
+
+On map operations
+https://www.w3schools.com/js/js_object_maps.asp
+
+Learned about the array method splice from Cade and Clayton, and it would be how to use an array effefctively to track unvisited cities.
